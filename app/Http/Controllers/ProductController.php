@@ -2,9 +2,19 @@
 
 namespace App\Http\Controllers;
 
-public function show($id)
-{
-    $product = Product::findOrFail($id);
+use App\Models\Product;
+use Illuminate\Http\Request;
 
-    return view('product.detail', compact('product'));
+class ProductController extends Controller
+{
+    public function detail($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            abort(404); 
+        }
+
+        return view('detail', compact('product'));
+    }
 }

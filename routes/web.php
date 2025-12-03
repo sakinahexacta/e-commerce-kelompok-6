@@ -2,13 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return view('home');
+Route::get('/pengguna/home', function () {
+    return view('pengguna.home');
 })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
@@ -17,10 +19,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/category', function () {
-    return view('category');
+Route::get('/pengguna/category', function () {
+    return view('pengguna.category');
 })->middleware(['auth', 'verified'])->name('category');
 
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->middleware(['auth', 'verified'])->name('admin.dashboard');
+
+Route::get('/toko/dashboard', function () {
+    return view('toko.dashboard');
+})->middleware(['auth', 'verified'])->name('toko.dashboard');
 
 require __DIR__.'/auth.php';
