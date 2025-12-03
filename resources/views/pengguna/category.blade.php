@@ -5,118 +5,26 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <h3 class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-2xl font-semibold text-gray-700 mb-6">
-            {{__('Bunga Asli')}}</h3>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white h-[500px] overflow-hidden shadow-sm sm:rounded-lg py-10 px-10">
-                <div class="flex flex-wrap gap-10">
-                    <a href="{{ route('product.detail', 1) }}">
-                        <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                            <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                            <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                            <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                        </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
+    @foreach($categories as $category)
+        <div class="py-12">
+            <h3 class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-2xl font-semibold text-gray-700 mb-6">
+                {{ $category->name }}
+            </h3>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white h-auto overflow-hidden shadow-sm sm:rounded-lg py-10 px-10">
+                    <div class="flex flex-wrap gap-10">
+                        @foreach($category->products as $product)
+                            <a href="{{ route('product.detail', $product->id) }}">
+                                <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
+                                    <img src="{{ asset($product->thumbnail->image) }}" alt="{{ $product->name }}" class="w-[250px] object-cover sm:rounded-t-lg">
+                                    <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">{{ $product->name }}</p>
+                                    <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
                 </div>
             </div>
         </div>
-    </div>
-     <div class="py-12">
-        <h3 class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-2xl font-semibold text-gray-700 mb-6">
-            {{__('Buket Bunga')}}</h3>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white h-[500px] overflow-hidden shadow-sm sm:rounded-lg py-10 px-10">
-                <div class="flex flex-wrap gap-10">
-                     <a href="/detail.blade.php">
-                        <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                            <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                            <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                            <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                        </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-     <div class="py-12">
-        <h3 class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-2xl font-semibold text-gray-700 mb-6">
-            {{__('Papan Bunga')}}</h3>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white h-[500px] overflow-hidden shadow-sm sm:rounded-lg py-10 px-10">
-                <div class="flex flex-wrap gap-10">
-                     <a href="/detail.blade.php">
-                        <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                            <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                            <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                            <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                        </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
-                    <a href="/detail.blade.php">
-                    <div class="bg-pink-100 h-[330px] w-[250px] sm:rounded-lg">
-                        <img src="{{ asset('image/bunga blackpink.jpg') }}" alt="Dashboard Image" class="w-[250px] object-cover sm:rounded-t-lg">
-                                                <p class="text-left text-xl mt-2 ml-2 font-semibold text-gray-700">Blackpink Flower</p>
-                        <p class="text-left text-lg mt-1 ml-2 font-normal text-gray-500">Rp. 150.000</p>
-                    </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endforeach
 </x-app-layout>

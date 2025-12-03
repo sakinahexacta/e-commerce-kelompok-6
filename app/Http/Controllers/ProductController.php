@@ -17,4 +17,14 @@ class ProductController extends Controller
 
         return view('detail', compact('product'));
     }
+
+    public function index()
+    {
+    $products = Product::with('thumbnail')->get();
+    return view('pengguna.home', compact('products'));
+    }
+
+    
+
+
 }

@@ -45,4 +45,18 @@ class Product extends Model
     {
         return $this->hasMany(ProductReview::class);
     }
+    public function images()
+    {
+    return $this->hasMany(ProductImage::class);
+    }
+    public function thumbnail()
+    {
+    return $this->hasOne(ProductImage::class)->where('is_thumbnail', 1);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+
 }

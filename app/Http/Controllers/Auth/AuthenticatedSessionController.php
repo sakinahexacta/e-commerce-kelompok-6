@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('toko.dashboard');
         }
 
-        return redirect()->route('pengguna.dashboard');
+        return redirect()->route('pengguna.home');
     }
 
 
