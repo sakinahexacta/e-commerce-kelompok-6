@@ -15,7 +15,7 @@ class ProductController extends Controller
             abort(404); 
         }
 
-        return view('detail', compact('product'));
+        return view('pengguna.detail', compact('product'));
     }
 
     public function index()

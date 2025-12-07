@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
+Route::get('/product/{id}', [ProductController::class, 'detail'])->name('pengguna.detail');
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
