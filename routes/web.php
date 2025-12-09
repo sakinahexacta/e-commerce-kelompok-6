@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 
 
 Route::get('/', function () {
@@ -33,5 +34,33 @@ Route::get('/toko/dashboard', function () {
 Route::get('/pengguna/category', [CategoryController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('pengguna.category');
+
+Route::get('/checkout/{product}', [CheckoutController::class, 'index'])
+    ->name('checkout.index')
+    ->middleware('auth');
+
+Route::post('/checkout/{product}', [CheckoutController::class, 'store'])
+    ->name('checkout.store')
+    ->middleware('auth');
+
+Route::get('/checkout/transaction/{transaction}', [CheckoutController::class, 'show'])
+    ->name('checkout.show')
+    ->middleware('auth');
+
+Route::get('/checkout/{product}/alamat', [CheckoutController::class, 'address'])
+    ->name('pengguna.alamat')
+    ->middleware('auth');
+
+Route::post('/checkout/{product}/alamat', [CheckoutController::class, 'storeAddress'])
+    ->name('pengguna.alamat.store')
+    ->middleware('auth');
+
+Route::get('/checkout/{product}/pengiriman', [CheckoutController::class, 'shipping'])
+    ->name('pengguna.pengiriman')
+    ->middleware('auth');
+
+Route::get('/checkout/{product}/metodepembayaran', [CheckoutController::class, 'payment'])
+    ->name('pengguna.metodepembayaran')
+    ->middleware('auth');
 
 require __DIR__.'/auth.php';
