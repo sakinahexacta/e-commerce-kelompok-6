@@ -21,6 +21,7 @@ class Transaction extends Model
         'tax',
         'grand_total',
         'payment_status',
+        'status',
     ];
 
     protected $casts = [

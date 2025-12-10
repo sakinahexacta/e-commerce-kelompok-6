@@ -15,22 +15,12 @@
 
             {{-- Filter Status --}}
             <div class="mb-6 flex justify-center gap-3">
-                <a href="{{ route('toko.orders.home', ['status' => 'pending']) }}"
-                    class="px-4 py-2 rounded-lg bg-white shadow text-gray-700 hover:bg-pink-100">
-                    Pending
-                </a>
-                <a href="{{ route('toko.orders.home', ['status' => 'processing']) }}"
-                    class="px-4 py-2 rounded-lg bg-white shadow text-gray-700 hover:bg-pink-100">
-                    Diproses
-                </a>
-                <a href="{{ route('toko.orders.home', ['status' => 'shipped']) }}"
-                    class="px-4 py-2 rounded-lg bg-white shadow text-gray-700 hover:bg-pink-100">
-                    Dikirim
-                </a>
-                <a href="{{ route('toko.orders.home', ['status' => 'completed']) }}"
-                    class="px-4 py-2 rounded-lg bg-white shadow text-gray-700 hover:bg-pink-100">
-                    Selesai
-                </a>
+                @foreach(['pending','processing','shipped','completed'] as $s)
+                    <a href="{{ route('toko.orders.home', ['status' => $s]) }}"
+                       class="px-4 py-2 rounded-lg bg-white shadow text-gray-700 hover:bg-pink-100 {{ request('status') == $s ? 'bg-pink-100 text-pink-700' : '' }}">
+                        {{ ucfirst($s) }}
+                    </a>
+                @endforeach
             </div>
 
             {{-- Tabel Pesanan --}}
@@ -45,27 +35,29 @@
                             <th class="px-6 py-3 font-semibold text-sm">Aksi</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @forelse ($orders as $order)
                             <tr class="border-b hover:bg-pink-50">
                                 <td class="px-6 py-4">{{ $order->id }}</td>
-                                <td class="px-6 py-4">{{ $order->buyer_name }}</td>
-                                <td class="px-6 py-4">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                <td class="px-6 py-4">{{ $order->buyer->name ?? $order->buyer_name }}</td>
+                                <td class="px-6 py-4">Rp {{ number_format($order->grand_total, 0, ',', '.') }}</td>
                                 <td class="px-6 py-4">
-                                    <span class="px-3 py-1 rounded-full text-sm
-                                        @if($order->status == 'pending') bg-yellow-200 text-yellow-800
-                                        @elseif($order->status == 'processing') bg-blue-200 text-blue-800
-                                        @elseif($order->status == 'shipped') bg-purple-200 text-purple-800
-                                        @elseif($order->status == 'completed') bg-green-200 text-green-800
-                                        @endif">
+                                    @php
+                                        $statusClass = match($order->status) {
+                                            'pending' => 'bg-yellow-200 text-yellow-800',
+                                            'processing' => 'bg-blue-200 text-blue-800',
+                                            'shipped' => 'bg-purple-200 text-purple-800',
+                                            'completed' => 'bg-green-200 text-green-800',
+                                            default => 'bg-gray-200 text-gray-800',
+                                        };
+                                    @endphp
+                                    <span class="px-3 py-1 rounded-full text-sm {{ $statusClass }}">
                                         {{ ucfirst($order->status) }}
                                     </span>
                                 </td>
-
                                 <td class="px-6 py-4">
                                     <a href="{{ route('toko.orders.show', $order->id) }}"
-                                        class="px-4 py-2 bg-pink-300 text-white rounded-lg hover:bg-pink-400">
+                                       class="px-4 py-2 bg-pink-300 text-white rounded-lg hover:bg-pink-400">
                                         Detail
                                     </a>
                                 </td>
@@ -83,5 +75,4 @@
 
         </div>
     </div>
-
 </x-app-layout>

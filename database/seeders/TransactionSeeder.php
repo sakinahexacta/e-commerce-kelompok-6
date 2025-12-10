@@ -45,6 +45,7 @@ class TransactionSeeder extends Seeder
                     'tax' => $tax,
                     'grand_total' => $grandTotal + $shippingCost + $tax,
                     'payment_status' => fake()->randomElement(['pending', 'paid', 'failed']),
+                    'status' => fake()->randomElement(['pending', 'processing', 'shipped', 'completed']),
                 ]);
             }
         }

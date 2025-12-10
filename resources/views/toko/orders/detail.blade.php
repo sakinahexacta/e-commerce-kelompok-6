@@ -16,31 +16,28 @@
                     </div>
                 @endif
 
-                {{-- Header --}}
                 <h3 class="text-2xl font-bold text-pink-400 mb-6">Detail Pesanan #{{ $order->id }}</h3>
 
                 {{-- Informasi Pembeli & Total --}}
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div>
                         <p class="text-gray-600">Nama Pembeli:</p>
-                        <p class="font-semibold">{{ $order->buyer_name }}</p>
+                        <p class="font-semibold">{{ $order->buyer->name ?? $order->buyer_name }}</p>
                     </div>
                     <div>
                         <p class="text-gray-600">Total Pembayaran:</p>
-                        <p class="font-semibold text-pink-500">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
+                        <p class="font-semibold text-pink-500">Rp {{ number_format($order->grand_total, 0, ',', '.') }}</p>
                     </div>
                     <div>
                         <p class="text-gray-600">Status Pesanan:</p>
-                        <p>
-                            <span class="px-3 py-1 rounded-full text-sm
-                                @if($order->status == 'pending') bg-yellow-200 text-yellow-800
-                                @elseif($order->status == 'processing') bg-blue-200 text-blue-800
-                                @elseif($order->status == 'shipped') bg-purple-200 text-purple-800
-                                @elseif($order->status == 'completed') bg-green-200 text-green-800
-                                @endif">
-                                {{ ucfirst($order->status) }}
-                            </span>
-                        </p>
+                        <span class="px-3 py-1 rounded-full text-sm
+                            @if($order->status == 'pending') bg-yellow-200 text-yellow-800
+                            @elseif($order->status == 'processing') bg-blue-200 text-blue-800
+                            @elseif($order->status == 'shipped') bg-purple-200 text-purple-800
+                            @elseif($order->status == 'completed') bg-green-200 text-green-800
+                            @endif">
+                            {{ ucfirst($order->status) }}
+                        </span>
                     </div>
                     <div>
                         <p class="text-gray-600">Nomor Resi:</p>
@@ -49,6 +46,29 @@
                 </div>
 
                 <hr class="my-6 border-pink-200">
+
+                {{-- Produk Pesanan --}}
+                <h4 class="text-lg font-semibold mb-2">Produk</h4>
+                <table class="min-w-full text-left border-collapse mb-6">
+                    <thead class="bg-pink-100 text-pink-700">
+                        <tr>
+                            <th class="px-6 py-2">Produk</th>
+                            <th class="px-6 py-2">Qty</th>
+                            <th class="px-6 py-2">Harga</th>
+                            <th class="px-6 py-2">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($order->transactionDetails as $detail)
+                            <tr class="border-b">
+                                <td class="px-6 py-2">{{ $detail->product->name ?? 'Produk' }}</td>
+                                <td class="px-6 py-2">{{ $detail->qty }}</td>
+                                <td class="px-6 py-2">Rp {{ number_format($detail->price ?? $detail->product->price, 0, ',', '.') }}</td>
+                                <td class="px-6 py-2">Rp {{ number_format($detail->subtotal ?? ($detail->qty * ($detail->price ?? $detail->product->price)), 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
                 {{-- Update Status --}}
                 <form action="{{ route('toko.orders.updateStatus', $order->id) }}" method="POST" class="mb-6">

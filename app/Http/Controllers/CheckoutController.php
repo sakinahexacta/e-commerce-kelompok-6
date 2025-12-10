@@ -53,12 +53,21 @@ class CheckoutController extends Controller
         ]);
 
 
-        $buyer = Buyer::firstOrCreate(['user_id' => $user->id]);
+        $buyer = Buyer::updateOrCreate(
+        ['user_id' => $user->id], // kondisi pencarian
+        [
+        'name' => $user->name,
+        'profile_picture' => $user->profile_picture ?? null,
+        'phone_number' => $user->phone_number ?? null,
+    ]
+);
+
         $store_id = $product->store_id;
         $product = Product::findOrFail($product->id);
 
         $transaction = Transaction::create([
             'buyer_id' => $buyer->id,
+            'buyer_name' => $buyer->name,
             'profile_picture' => $buyer->profile_picture,
             'phone_number' => $buyer->phone_number,
             'created_by' => $user->name,
@@ -75,6 +84,7 @@ class CheckoutController extends Controller
             'tax' => $request->tax,
             'grand_total' => $request->grand_total,
             'payment_status' => 'paid',
+            'status' => 'pending',
         ]);
 
         TransactionDetail::create([

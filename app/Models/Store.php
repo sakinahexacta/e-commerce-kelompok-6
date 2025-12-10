@@ -38,6 +38,6 @@ class Store extends Model
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class,'store_id', 'id');
     }
 }
