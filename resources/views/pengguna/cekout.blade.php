@@ -74,6 +74,7 @@
                         </svg>
                     </a>
                 </div>
+                <p class="text-gray-500">{{ $address }} {{ $city }} {{ $postal_code }}</p>
                 <div class="border-b border-pink-300 my-4"></div>
                 <div class="flex justify-between items-center w-full mt-auto">
                     <p class="text-left text-xl font-semibold text-gray-600">
@@ -87,6 +88,7 @@
                         </svg>
                     </a>
                 </div>
+                <p class="text-gray-500">{{ $shipping }}</p>
                 <div class="border-b border-pink-300 my-4"></div>
                 <div class="flex justify-between items-center w-full mt-auto">
                     <p class="text-left text-xl font-semibold text-gray-600">
@@ -100,6 +102,7 @@
                         </svg>
                     </a>
                 </div>
+                <p class="text-gray-500">{{ $payment }}</p>
             </div>
             <div class="bg-white shadow-sm sm:rounded-lg py-10 px-10 mt-5">
                 <div class="justify-between items-center w-full mt-auto">
@@ -111,38 +114,60 @@
                             <p class="text-left text-lg font-normal text-gray-600">
                                 Harga Produk
                             </p>
-                            <p class="text-left text-lg font-normal text-gray-600">
-                                Rp <span x-text="(qty*price).toLocaleString('id-ID')"></span>
-                            </p>
+                            <div x-data="{ qty: {{ $qty }}, price: {{ $product->price }} }">
+                                <p class="text-left text-lg font-normal text-gray-600">
+                                    Rp <span x-text="(qty*price).toLocaleString('id-ID')"></span>
+                                </p>
+                            </div>
                         </div>
                         <div class="flex justify-between w-full mt-2">
                             <p class="text-left text-lg font-normal text-gray-600">
                                 Biaya Pengiriman
                             </p>
                             <p class="text-left text-lg font-normal text-gray-600">
-                                Rp <span x-text="(qty*price).toLocaleString('id-ID')"></span>
+                                Rp {{ number_format($shippingCost, 0, ',', '.') }}
                             </p>
                         </div>
                         <div class="flex justify-between w-full mt-2">
                             <p class="text-left text-lg font-normal text-gray-600">
                                 Pajak
                             </p>
-                            <p class="text-left text-lg font-normal text-gray-600">
-                                Rp <span x-text="(qty*price).toLocaleString('id-ID')"></span>
-                            </p>
+                            <div x-data="{ qty: {{ $qty }}, price: {{ $product->price }} }">
+                                <p class="text-left text-lg font-normal text-gray-600">
+                                    Rp <span x-text="(qty*price*0.01).toLocaleString('id-ID')"></span>
+                                </p>
+                            </div>
                         </div>
                         <div class="border-b border-pink-300 my-4"></div>
                         <div class="flex justify-between w-full mt-2">
                             <p class="text-left text-lg font-normal text-gray-600">
-                                Harga Produk
+                                Total Harga
                             </p>
-                            <p class="text-left text-3xl font-semibold text-pink-600">
-                                Rp <span x-text="(qty*price).toLocaleString('id-ID')"></span>
-                            </p>
+                            <div x-data="{ qty: {{ $qty }}, price: {{ $product->price }} }">
+                                <p class="text-left text-3xl font-semibold text-pink-600">
+                                    Rp <span x-text="(qty*price + {{ $shippingCost }} + qty*price*0.01).toLocaleString('id-ID')"></span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <form action="{{ route('pengguna.cekout.store', ['product' => $product->id]) }}" method="POST">
+                @csrf
+                <input type="hidden" name="qty" value="{{ $qty }}">
+                <input type="hidden" name="address" value="{{ $address }}">
+                <input type="hidden" name="city" value="{{ $city }}">
+                <input type="hidden" name="postal_code" value="{{ $postal_code }}">
+                <input type="hidden" name="shipping_type" value="{{ $shipping }}">
+                <input type="hidden" name="shipping_cost" value="5000">
+                <input type="hidden" name="tax" value="{{ $product->price * $qty * 0.01 }}">
+                <input type="hidden" name="grand_total" value="{{ ($product->price * $qty) + 5000 + ($product->price * $qty * 0.01) }}">
+
+                <button type="submit"
+                    class="bg-pink-300 hover:bg-pink-600 text-white font-semibold py-2 px-4 w-full h-[50px] rounded mt-5">
+                    Checkout Sekarang
+                </button>
+            </form>
         </div>
     </div>
 </x-app-layout>

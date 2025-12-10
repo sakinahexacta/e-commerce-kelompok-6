@@ -135,7 +135,7 @@
             <div class="bg-white p-6 rounded-lg w-[400px] shadow-lg">
                 <h2 class="text-xl font-semibold text-pink-600 mb-4">Jumlah Pembelian</h2>
 
-                <form action="{{ route('checkout.index', $product->id) }}" method="GET">
+                <form action="{{ route('pengguna.cekout', $product->id) }}" method="GET">
                     <label class="block text-gray-700 mb-1">Jumlah :</label>
                     <input
                         type="number"
