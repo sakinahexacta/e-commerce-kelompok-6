@@ -47,7 +47,16 @@
                             <input type="text" name="postal_code" id="postal_code" required
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                                 focus:ring-pink-500 focus:border-pink-500 sm:text-sm">
-                        </div>
+                                Nama Pemesan
+                            </label>
+                            <input type="text" name="buyer_name" id="buyer_name" required
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                                focus:ring-pink-500 focus:border-pink-500 sm:text-sm">
+                                Nomor Telepon
+                            </label>
+                            <input type="text" name="phone_number" id="phone_number" required
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                                focus:ring-pink-500 focus:border-pink-500 sm:text-sm">                        </div>
 
                         <div class="flex justify-end">
                             <button type="submit"

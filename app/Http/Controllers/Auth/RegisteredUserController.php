@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         } elseif ($user->role === 'toko') {
-            return redirect()->route('toko.home');
+            return redirect()->route('toko.dashboard');
         } else {
             return redirect()->route('pengguna.home');
         }
