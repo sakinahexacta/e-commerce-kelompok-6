@@ -40,4 +40,6 @@ class Store extends Model
     {
         return $this->hasMany(Transaction::class,'store_id', 'id');
     }
+
+    
 }

@@ -22,6 +22,8 @@ class CheckoutController extends Controller
         $shipping_type = session('checkout.shipping_type');
         $payment = session('checkout.payment');
         $shippingCost = 5000;
+        $buyer_name = session('checkout.buyer_name');
+        $phone_number = session('checkout.phone_number');
 
         return view('pengguna.cekout', [
             'product' => $product,
@@ -34,6 +36,8 @@ class CheckoutController extends Controller
             'shipping_type' => $shipping_type,
             'payment' => $payment,
             'shippingCost' => $shippingCost,
+            'buyer_name' => $buyer_name,
+            'phone_number' => $phone_number,
         ]);
     }
 
@@ -54,13 +58,13 @@ class CheckoutController extends Controller
 
 
         $buyer = Buyer::updateOrCreate(
-        ['user_id' => $user->id], // kondisi pencarian
-        [
-        'name' => $user->name,
-        'profile_picture' => $user->profile_picture ?? null,
-        'phone_number' => $user->phone_number ?? null,
-    ]
-);
+                ['user_id' => $user->id], 
+                [
+                'name' => $user->name,
+                'profile_picture' => $user->profile_picture ?? null,
+                'phone_number' => $user->phone_number ?? null,
+            ]
+        );
 
         $store_id = $product->store_id;
         $product = Product::findOrFail($product->id);

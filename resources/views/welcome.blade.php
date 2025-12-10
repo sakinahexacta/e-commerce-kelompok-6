@@ -57,11 +57,6 @@
                                 text-white text-2xl font-semibold drop-shadow-lg translate-x-10 translate-y-10">
                             Cari bunga indah nan cantik disini!
                         </p>
-
-                    <div class="w-[50px] h-[50px] absolute translate-x-20 translate-y-28">
-                        <img src="{{ asset('image/bunga matahari.jpg') }}" alt="Flower Icon" class="w-full h-full">
-
-                    </div>
             </div>
 
                 <script>

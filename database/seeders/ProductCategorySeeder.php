@@ -41,5 +41,32 @@ class ProductCategorySeeder extends Seeder
                 ]);
             }
         }
+
+        ProductCategory::create([
+            'name' => 'Bunga Asli',
+            'slug' => 'bunga-asli',
+            'tagline' => 'Produk Bunga Asli',
+            'description' => 'Bunga Asli yang langsung ditanam pada kebun kami, sehingga terjamin kualitasnya.',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        ProductCategory::create([
+            'name' => 'Buket Bunga',
+            'slug' => 'buket-bunga',
+            'tagline' => 'Produk Buket Bunga',
+            'description' => 'Bunga yang dihias menjadi suatu buket yang indah. Dapat diisi dengan bunga asli ataupun bunga imitasi.',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        ProductCategory::create([
+            'name' => 'Papan Bunga',
+            'slug' => 'papan-bunga',
+            'tagline' => 'Produk Papan Bunga',
+            'description' => 'Rangkaian bunga yang dibentuk menjadi sebuah papan karangan. ',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

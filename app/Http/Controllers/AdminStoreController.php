@@ -8,7 +8,7 @@ class AdminStoreController extends Controller
 {
     public function index()
     {
-        // Ambil semua toko yang belum diverifikasi
+
         $pendingStores = Store::where('is_verified', 0)->get();
         $verifiedStores = Store::where('is_verified', 1)->get();
 
@@ -26,7 +26,6 @@ class AdminStoreController extends Controller
 
     public function reject($id)
     {
-        // Bisa juga tetap 0 atau bikin log tambahan kalau ditolak
         Store::where('id', $id)->update([
             'is_verified' => 0
         ]);
