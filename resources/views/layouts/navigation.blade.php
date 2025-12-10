@@ -12,14 +12,24 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
+                    {{-- Menu umum untuk semua user --}}
                     <x-nav-link :href="route('pengguna.home')" :active="request()->routeIs('pengguna.home')">
                         {{ __('HOME') }}
                     </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
                     <x-nav-link :href="route('pengguna.category')" :active="request()->routeIs('pengguna.category')">
                         {{ __('CATEGORY') }}
                     </x-nav-link>
+
+                    {{-- Menu tambahan khusus seller (jika user sudah punya toko) --}}
+                    @auth
+                        @if (Auth::user()->store)
+                            <x-nav-link :href="route('toko.dashboard')" :active="request()->routeIs('toko.dashboard')">
+                                {{ __('TOKO SAYA') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 
