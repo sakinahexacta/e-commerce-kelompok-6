@@ -5,6 +5,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StoreBalanceController;
+use App\Http\Controllers\StoreWithdrawalController;
+use App\Http\Controllers\SellerProductController;
 
 
 Route::get('/', function () {
@@ -110,6 +115,8 @@ Route::post('/checkout/{product}/metodepembayaran', [CheckoutController::class, 
 Route::post('/checkout/{product}/store', [CheckoutController::class, 'store'])
     ->name('pengguna.cekout.store')
     ->middleware('auth');
+
+
 
 
 

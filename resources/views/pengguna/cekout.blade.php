@@ -88,7 +88,7 @@
                         </svg>
                     </a>
                 </div>
-                <p class="text-gray-500">{{ $shipping }}</p>
+                <p class="text-gray-500">{{ $shipping_type }}</p>
                 <div class="border-b border-pink-300 my-4"></div>
                 <div class="flex justify-between items-center w-full mt-auto">
                     <p class="text-left text-xl font-semibold text-gray-600">
@@ -156,10 +156,11 @@
                 @csrf
                 <input type="hidden" name="qty" value="{{ $qty }}">
                 <input type="hidden" name="address" value="{{ $address }}">
+                <input type="hidden" name="address_id" value="{{ $address_id }}">
                 <input type="hidden" name="city" value="{{ $city }}">
                 <input type="hidden" name="postal_code" value="{{ $postal_code }}">
-                <input type="hidden" name="shipping_type" value="{{ $shipping }}">
-                <input type="hidden" name="shipping_cost" value="5000">
+                <input type="hidden" name="shipping_type" value="{{ $shipping_type }}">
+                <input type="hidden" name="shipping_cost" value="{{ $shippingCost }}">
                 <input type="hidden" name="tax" value="{{ $product->price * $qty * 0.01 }}">
                 <input type="hidden" name="grand_total" value="{{ ($product->price * $qty) + 5000 + ($product->price * $qty * 0.01) }}">
 
@@ -167,7 +168,13 @@
                     class="bg-pink-300 hover:bg-pink-600 text-white font-semibold py-2 px-4 w-full h-[50px] rounded mt-5">
                     Checkout Sekarang
                 </button>
+
             </form>
+            @if(session('success'))
+                <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

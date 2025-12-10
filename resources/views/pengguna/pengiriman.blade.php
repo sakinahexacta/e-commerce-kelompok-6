@@ -48,10 +48,10 @@
                                         <p class="text-center mt-2 text-gray-600">SiCepat</p>
                                 </div>
                             </div>
-                            <label for="shipping" class="block text-xl font-medium text-gray-700 mt-10">
+                            <label for="shipping_type" class="block text-xl font-medium text-gray-700 mt-10">
                                 Jenis Pengiriman
                             </label>
-                            <input type="text" name="shipping" id="shipping" required
+                            <input type="text" name="shipping_type" id="shipping_type" required
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                                 focus:ring-pink-500 focus:border-pink-500 sm:text-sm">
                         </div>

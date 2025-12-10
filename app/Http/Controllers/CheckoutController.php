@@ -19,7 +19,7 @@ class CheckoutController extends Controller
         $address_id = session('checkout.address_id');
         $city = session('checkout.city');
         $postal_code = session('checkout.postal_code');
-        $shipping = session('checkout.shipping');
+        $shipping_type = session('checkout.shipping_type');
         $payment = session('checkout.payment');
         $shippingCost = 5000;
 
@@ -31,7 +31,7 @@ class CheckoutController extends Controller
             'address_id' => $address_id,
             'city' => $city,
             'postal_code' => $postal_code,
-            'shipping' => $shipping,
+            'shipping_type' => $shipping_type,
             'payment' => $payment,
             'shippingCost' => $shippingCost,
         ]);
@@ -54,33 +54,37 @@ class CheckoutController extends Controller
 
 
         $buyer = Buyer::firstOrCreate(['user_id' => $user->id]);
-
+        $store_id = $product->store_id;
         $product = Product::findOrFail($product->id);
 
         $transaction = Transaction::create([
             'buyer_id' => $buyer->id,
-            'store_id' => 1,
+            'profile_picture' => $buyer->profile_picture,
+            'phone_number' => $buyer->phone_number,
+            'created_by' => $user->name,
+            'updated_by' => $user->name,
+            'store_id' => $store_id,
             'code' => 'TRX-' . strtoupper(uniqid()),
             'address' => $request->address,
-            'address_id' => $request->address_id,
+            'address_id' => $request->address_id ?? session('checkout.address_id'),
             'city' => $request->city,
             'postal_code' => $request->postal_code,
-            'shipping' => 0,
+            'shipping' => session('checkout.shipping', 'default_shipping'),
             'shipping_type' => $request->shipping_type,
             'shipping_cost' => $request->shipping_cost,
             'tax' => $request->tax,
             'grand_total' => $request->grand_total,
-            'payment_status' => 'pending',
+            'payment_status' => 'paid',
         ]);
 
         TransactionDetail::create([
             'transaction_id' => $transaction->id,
             'product_id' => $product->id,
             'qty' => $request->qty,
-            'sub_total' => $product->price * $request->qty,
+            'subtotal' => $product->price * $request->qty,
         ]);
 
-        return redirect()->route('pengguna.cekout.show', $transaction->id);
+        return redirect()->back()->with('success', 'Checkout berhasil! Data tersimpan di database.');
     }
 
     public function show(Transaction $transaction)
@@ -122,11 +126,11 @@ class CheckoutController extends Controller
     public function storeShipping(Request $request, Product $product)
     {
         $request->validate([
-            'shipping' => 'required',
+            'shipping_type' => 'required',
         ]);
 
         session([
-            'checkout.shipping' => $request->shipping
+            'checkout.shipping_type' => $request->shipping_type
         ]);
 
         return redirect()->route('pengguna.cekout', $product->id);
