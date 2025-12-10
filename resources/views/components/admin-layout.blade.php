@@ -19,7 +19,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-pink-100">
-            @include('layouts.navigation')
+            @include('layouts.admin-navigation')
 
             <!-- Page Heading -->
             @isset($header)

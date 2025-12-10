@@ -3,11 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\StoreController;
-use App\Http\Controllers\StoreBalanceController;
-use App\Http\Controllers\StoreWithdrawalController;
-use App\Http\Controllers\SellerProductController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ManagementController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -76,5 +74,43 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/pengguna/category', [CategoryController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('pengguna.category');
+
+Route::get('/checkout/{product}', [CheckoutController::class, 'index'])
+    ->name('pengguna.cekout')
+    ->middleware('auth');
+
+Route::get('/checkout/transaction/{transaction}', [CheckoutController::class, 'show'])
+    ->name('pengguna.cekout.show')
+    ->middleware('auth');
+
+Route::get('/checkout/{product}/alamat', [CheckoutController::class, 'address'])
+    ->name('pengguna.alamat')
+    ->middleware('auth');
+
+Route::post('/checkout/{product}/alamat', [CheckoutController::class, 'storeAddress'])
+    ->name('pengguna.alamat.store')
+    ->middleware('auth');
+
+Route::get('/checkout/{product}/pengiriman', [CheckoutController::class, 'shipping'])
+    ->name('pengguna.pengiriman')
+    ->middleware('auth');
+
+Route::post('/checkout/{product}/pengiriman', [CheckoutController::class, 'storeShipping'])
+    ->name('pengguna.pengiriman.store')
+    ->middleware('auth');
+    
+Route::get('/checkout/{product}/metodepembayaran', [CheckoutController::class, 'payment'])
+    ->name('pengguna.metodepembayaran')
+    ->middleware('auth');
+
+Route::post('/checkout/{product}/metodepembayaran', [CheckoutController::class, 'storePayment'])
+    ->name('pengguna.metodepembayaran.store')
+    ->middleware('auth');
+
+Route::post('/checkout/{product}/store', [CheckoutController::class, 'store'])
+    ->name('pengguna.cekout.store')
+    ->middleware('auth');
+
+
 
 require __DIR__.'/auth.php';
