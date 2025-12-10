@@ -10,11 +10,17 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreBalanceController;
 use App\Http\Controllers\StoreWithdrawalController;
 use App\Http\Controllers\SellerProductController;
-
+use App\Http\Controllers\AdminStoreController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->middleware('guest')
+    ->name('login');
+
 
 // Home pengguna
 Route::get('/pengguna/home', [ProductController::class, 'index'])
@@ -44,9 +50,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Dashboard toko
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/toko/dashboard', [StoreController::class, 'dashboard'])->name('toko.dashboard');
-});
+Route::get('/toko/dashboard', function () {
+    return view('toko.dashboard');
+})->middleware(['auth', 'verified'])->name('toko.dashboard');
 
 // Orders toko
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -116,6 +122,18 @@ Route::post('/checkout/{product}/store', [CheckoutController::class, 'store'])
     ->name('pengguna.cekout.store')
     ->middleware('auth');
 
+Route::get('/admin/management', [ManagementController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.management');
+
+Route::get('/admin/verifikasi', [AdminStoreController::class, 'index'])
+    ->name('admin.verifikasi');
+
+Route::post('/admin/verifikasi/{id}/approve', [AdminStoreController::class, 'approve'])
+    ->name('admin.store.approve');
+
+Route::post('/admin/verifikasi/{id}/reject', [AdminStoreController::class, 'reject'])
+    ->name('admin.store.reject');
 
 
 

@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
 {
-
+    // Form register toko
     public function create()
     {
         return view('toko.register');
     }
 
+    // Simpan pengajuan toko
     public function store(Request $request)
     {
         $request->validate([
@@ -29,12 +30,15 @@ class StoreController extends Controller
 
         $user = Auth::user();
 
+        // Cek jika user sudah punya toko
         if ($user->store) {
-            return redirect()->back()->with('error', 'Kamu sudah memiliki toko.');
+            return back()->with('error', 'Kamu sudah memiliki toko.');
         }
 
+        // Upload logo
         $logoPath = $request->file('logo')->store('logos', 'public');
 
+        // Simpan toko sebagai pending
         Store::create([
             'user_id' => $user->id,
             'name' => $request->name,
@@ -45,23 +49,32 @@ class StoreController extends Controller
             'postal_code' => $request->postal_code,
             'address_id' => $request->address_id,
             'logo' => $logoPath,
-            'is_verified' => false,
+            'status' => 'pending', // PENTING
         ]);
 
-        $user->refresh();
-
-        return redirect()->route('toko.orders.home')
-            ->with('success', 'Toko berhasil didaftarkan! Tunggu verifikasi admin.');
+        return redirect()->route('toko.dashboard')
+            ->with('success', 'Toko berhasil diajukan! Tunggu verifikasi admin.');
     }
 
+    // Dashboard toko
     public function dashboard()
     {
         $user = Auth::user();
         $store = $user->store;
 
+        if (!$store) {
+            return redirect()->route('toko.register')
+                ->with('error', 'Kamu belum memiliki toko.');
+        }
+
+        if ($store->status !== 'approved') {
+            return back()->with('error', 'Toko Anda belum diverifikasi admin.');
+        }
+
         return view('toko.dashboard', compact('store'));
     }
 
+    // Halaman daftar pesanan
     public function orders()
     {
         $user = Auth::user();
@@ -72,20 +85,24 @@ class StoreController extends Controller
                 ->with('error', 'Kamu belum memiliki toko.');
         }
 
-        // Nanti kalau sudah ada model Order, ini bisa diganti ambil dari relasi
-        $orders = []; // sementara kosong
+        if ($store->status !== 'approved') {
+            return redirect()->route('toko.dashboard')
+                ->with('error', 'Toko belum diverifikasi.');
+        }
+
+        // nanti diganti dengan relasi orders
+        $orders = [];
 
         return view('toko.orders.home', compact('store', 'orders'));
     }
 
-        // Detail pesanan
+    // Detail pesanan
     public function orderDetail($id)
     {
         $user = Auth::user();
         $store = $user->store;
 
-        // Pastikan toko sudah diverifikasi
-        if (!$store || !$store->is_verified) {
+        if (!$store || $store->status !== 'approved') {
             return redirect()->route('toko.dashboard')->with('error', 'Toko belum diverifikasi.');
         }
 
@@ -104,6 +121,10 @@ class StoreController extends Controller
         $user = Auth::user();
         $store = $user->store;
 
+        if ($store->status !== 'approved') {
+            return back()->with('error', 'Toko belum diverifikasi.');
+        }
+
         $order = $store->orders()->findOrFail($id);
         $order->update(['status' => $request->status]);
 
@@ -121,6 +142,10 @@ class StoreController extends Controller
         $user = Auth::user();
         $store = $user->store;
 
+        if ($store->status !== 'approved') {
+            return back()->with('error', 'Toko belum diverifikasi.');
+        }
+
         $order = $store->orders()->findOrFail($id);
         $order->update(['resi_number' => $request->resi_number]);
 
@@ -128,5 +153,32 @@ class StoreController extends Controller
             ->with('success', 'Nomor resi berhasil diperbarui.');
     }
 
+        public function verificationPage()
+    {
+        $stores = Store::where('is_verified', false)->get();
 
+        return view('admin.verifikasi', compact('stores'));
+    }
+
+
+    
+    public function approve($id)
+    {
+        Store::where('id', $id)->update([
+            'status' => 'approved'
+        ]);
+
+        return redirect()->route('admin.store.verification')
+            ->with('success', 'Toko berhasil disetujui.');
+    }
+
+    public function reject($id)
+    {
+        Store::where('id', $id)->update([
+            'status' => 'rejected'
+        ]);
+
+        return redirect()->route('admin.store.verification')
+            ->with('success', 'Toko berhasil ditolak.');
+    }
 }
